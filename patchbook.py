@@ -10,6 +10,7 @@ import re
 import os
 import argparse
 import json
+import subprocess
 
 # Parser INFO
 parserVersion = "b3"
@@ -54,9 +55,12 @@ parser.add_argument("-connections", action="store_const", const="connections", d
                     help="Print connections")
 parser.add_argument("-graph", action="store_const", const="graph", dest="command",
                     help="Print dot code for graph")
+parser.add_argument('-clipboard', action='store_true', default=False,
+                    help="Copy generated graphviz to clipboard at the end of the process")
 args = parser.parse_args()
 filename = args.file
 debugMode = args.debug
+clipboardMode = args.clipboard
 direction = args.dir
 if args.command:
     one_shot_command = args.command
@@ -73,6 +77,10 @@ if args.debug == 1:
 else:
     debugMode = False
 
+def write_to_clipboard(output):
+    process = subprocess.Popen(
+        'pbcopy', env={'LANG': 'en_US.UTF-8'}, stdin=subprocess.PIPE)
+    process.communicate(output.encode('utf-8'))
 
 def initial_print():
     global quiet
@@ -508,7 +516,7 @@ def graphviz():
         inputs = mainDict["modules"][module]["connections"]["in"]
         module_inputs = ""
         in_count = 0
-        for inp in sorted(inputs):
+        for inp in inputs:
             inp_formatted = "_" + re.sub('[^A-Za-z0-9]+', '', inp)
             in_count += 1
             module_inputs += "<" + inp_formatted + "> " + inp.upper()
@@ -560,6 +568,8 @@ def graphviz():
     if not quiet:
         print("-------------------------")
         print()
+    if clipboardMode:
+        write_to_clipboard(total_string)
     return total_string
 
 
