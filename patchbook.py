@@ -57,9 +57,13 @@ parser.add_argument("-graph", action="store_const", const="graph", dest="command
                     help="Print dot code for graph")
 parser.add_argument('-clipboard', action='store_true', default=False,
                     help="Copy generated graphviz to clipboard at the end of the process")
+parser.add_argument('-esnho', action='store_true', default=False,
+                    help="Enable Esnho Mode")
+
 args = parser.parse_args()
 filename = args.file
 debugMode = args.debug
+esnhoMode = args.esnho
 clipboardMode = args.clipboard
 direction = args.dir
 if args.command:
@@ -469,22 +473,32 @@ def graphviz():
         to_token = ":n  "
     else:
         rank_dir_token = "rankdir = LR;\n"
-        from_token = ":e  -> "
-        to_token = ":w  "
+        if (esnhoMode):
+            rank_dir_token = ""
+            from_token = " -> "
+            to_token = " "
+        else:
+            from_token = ":e  -> "
+            to_token = ":w  "
     if not quiet:
         print("Generating signal flow code for GraphViz.")
         print("Copy the code between the line break and paste it into https://dreampuf.github.io/GraphvizOnline/ to download a SVG / PNG chart.")
     conn = []
     total_string = ""
     if not quiet: print("-------------------------")
-    print("digraph G{\n" + rank_dir_token + "splines = polyline;\nordering=out;")
-    total_string += "digraph G{\n" + rank_dir_token + "splines = polyline;\nordering=out;\n"
+    if esnhoMode:
+        print("digraph G{\n" + rank_dir_token + "splines = true;\nordering=in;")
+        total_string += "digraph G{\n" + rank_dir_token + "splines = true;\nordering=in;\n"
+    else:
+        print("digraph G{\n" + rank_dir_token + "splines = polyline;\nordering=out;")
+        total_string += "digraph G{\n" + rank_dir_token + "splines = polyline;\nordering=out;\n"
+    total_string += "\n\n"
     for module in sorted(mainDict["modules"]):
         # Get all outgoing connections:
         outputs = mainDict["modules"][module]["connections"]["out"]
         module_outputs = ""
         out_count = 0
-        for out in sorted(outputs):
+        for out in outputs:
             out_count += 1
             out_formatted = "_" + re.sub('[^A-Za-z0-9]+', '', out)
             module_outputs += "<" + out_formatted + "> " + out.upper()
@@ -544,12 +558,12 @@ def graphviz():
         final_box = module.replace(
             " ", "") + "[label=\"{ {" + module_inputs + "}|" + middle + "| {" + module_outputs + "}}\"  shape=Mrecord]"
         print(final_box)
-        total_string += final_box + "; "
-
+        total_string += final_box + "; \n"
+    total_string += "\n\n"
     # Print Connections
     for c in sorted(conn):
         print(c[1])
-        total_string += c[1] + "; "
+        total_string += c[1] + "; \n"
 
     if len(mainDict["comments"]) != 0:
         format_comments = ""
@@ -563,7 +577,7 @@ def graphviz():
         print(format_comments)
 
     print("}")
-    total_string += "}"
+    total_string += "}\n"
 
     if not quiet:
         print("-------------------------")
