@@ -71,7 +71,17 @@ FEEDBACK RGB ANALOGICO:
 | Freq2 Range = 5 (Unsync Vid)
 
 * Vidiot:
-| Key 2 = Keyer One
+| AVCO VC = 0
+| AVCO Rate = 30%
+| VVCO Rate = 50%
+| ShapeChanger = 0%
+| Brightness = 0
+| Contrast = 45%
+| Definition = 55%
+| Key 1 = Key
+| Solar = Off
+| Key 2 = Key
+| Key 2 amt = 0%
 | Colorizer In = Video Processor
 | Video Processor In = Video In
 
