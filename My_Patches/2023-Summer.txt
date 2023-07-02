@@ -1,0 +1,147 @@
+SPECIAL SHAPE SIMMETRY:
+    - Diver (H) -> Navigator (H In)
+    - Diver (V) -> Navigator (V In)
+    - Navigator (H Out) -> DSG3 (S2 H In)
+    - Navigator (V Out) -> DSG3 (S2 V In)
+    - Modbox (240) -> Navigator (X VC)
+    - Modbox (120) -> Navigator (Y VC)
+    - Modbox (S/H NotScaled) -> Navigator (Rotation VC)
+    - DSG3 (S2 Plus) -> FKG3 (Key R)
+    // - FKG3 (R Out) -> Matrix Mixer 1 (B R In)
+
+LAYER ONE:
+    - Bajascillator (180) -> Matrix Mixer 1 (A R In)
+    - Bajascillator (300) -> Matrix Mixer 1 (A G In)
+    - Bajascillator (60) -> Matrix Mixer 1 (A B In)
+    - Sensory Translator (2560Hz) -> Bajascillator (CV)
+    - Sensory Translator (B) -> Bajascillator (CV)
+
+LAYER TWO:
+    - Diver (H-V) -> Matrix Mixer 1 (B R In)
+    - Sensory Translator (640Hz) -> Diver (Wave VC)
+    - Sensory Translator (40Hz) -> Diver (H Phase VC)
+    - Sensory Translator (10240Hz) -> Diver (H Phase VC)
+
+OSCILLATORE:
+    - Sensory Translator (40Hz) -> DWO3 (FREQ1 CV)
+    - Sensory Translator (10240Hz) -> DWO3 (FREQ1 CV)
+    - DWO3 (OSC2 Ramp) -> DSG3 (Shape1 B)
+
+LAYER THREE:
+    - Fortress (RGB) -> Matrix Mixer 2 (C RGB In)
+    - Fortress (VCO 1) -> Vidiot (AVCO Reset)
+    - Vidiot (Diamond) -> Fortress (ADC1 VC)
+    - Vidiot (Video In Thru) -> Fortress (ADC2 VC)
+    - Sensory Translator (160Hz) -> Vidiot (AVCO VC)
+    - Bajascillator (0) -> Fortress (OSC1 VC)
+
+VIDEO IN:
+    - VU001 (Luma) -> Vidiot (Video In RCA)
+    - VU003 (RGB) -> Esnho Multiplier (Ins)
+    - Sensory Translator (A) -> Esnho Multiplier (CV I)
+    - Sensory Translator (C) -> Esnho Multiplier (CV II)
+    - Sensory Translator (D) -> Esnho Multiplier (CV III)
+    - Esnho Multiplier (RGB) -> Matrix Mixer 2 (A RGB In)
+
+FEEDBACK B&W:
+    - Vidiot (Gray Oout) -> Staircase (Source)
+    - Staircase (One) -> Vidiot (Video In J)
+    - Sensory Translator (A) -> Staircase (Freq VC)
+    - Diver (H-V) -> Staircase (Phase VC)
+
+- Vidiot (Noise) -> Vidiot (Invert Key Trig 2)
+
+
+FEEDBACK RGB DIGIT:
+    // - Vidiot (Diamond) -> Fortress (ADC1 VC)
+    // - Fortress (RGB) -> Matrix Mixer 2 (C RGB In)
+    - DWO3 (OSC1 Ramp) -> Fortress (ADC3 VC)
+
+FEEDBACK RGB ANALOGICO:
+    - Vidiot (RGB Out) -> Matrix Mixer 2 (B RGB In)
+    - Matrix Mixer 2 (RGB Out) -> Matrix Mixer 1 (C RGB In)
+    - Matrix Mixer 1 (RGB Out) -> Vidiot (RGB In)
+
+* DWO3:
+| Freq1 = 75%
+| Freq1 VC = 0
+| Freq1 Range = 3 (S)
+| Freq2 = 25%
+| Freq2 VC = 0
+| Freq2 Range = 5 (Unsync Vid)
+
+* Vidiot:
+| Key 2 = Keyer One
+| Colorizer In = Video Processor
+| Video Processor In = Video In
+
+* Diver:
+| Bank = 2
+| Mirror X = True
+| Mirror Y = True
+| Scroll X = Off
+| Scroll Y = Off
+| Scroll H Phase = 0
+| Scroll V Phase = 50%
+
+* Bajascillator:
+| Frequency = 0
+| CV = 0
+
+* Staircase:
+| Frequency = 0
+| Frequency CV = ore 12
+| Phase = 45%
+| Phase CV = ore 12
+| Phase Fine = ore 12
+| Switches = all down
+
+* DSG3:
+| 1st line switches = All ON
+| 2nd line switches = All OFF
+| 3rd line switches = All ON
+
+* Matrix Mixer 1:
+| A = OFF
+| B = OFF
+| C = +1
+
+* Matrix Mixer 2:
+| A = OFF
+| B = OFF
+| C = OFF
+
+* Sensory Translator:
+| Bass = 25%
+| Treble = 70%
+| Phono Gain = 70%
+| Mic Gain = 0%
+
+* Navigator:
+| Spin = Off or ON
+| SpinAmt = 360
+| SpinDir = PingPong
+| X Anchor = 25%
+| X Position = 50% ?
+| X Mirror = Off
+| X CV Kind = Position
+| X CV Type = DC
+| Y Anchor = 55%
+| Y Position = 70%
+| Y Mirror = Off
+| Y CV Kind = Position
+| Y CV Type = DC
+
+* FKG3 :
+| Top Switch = Top Selection
+| Source = Key
+| Mode = Luma
+| Threshold = 50% tobegin
+| Softness = 0
+
+* Modbox :
+| Wave Type = Ramp
+| 3fi Rate = 30%
+| Skew Rate = 55%
+| Sync 3fi = OFF
+| Sync Skew = ON
